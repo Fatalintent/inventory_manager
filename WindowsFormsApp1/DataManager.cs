@@ -10,7 +10,7 @@ namespace WindowsFormsApp1
     {
         
         public List<List<String>> inventory_database = new List<List<string>>();
-        public List<List<bool>> highlight_list = new List<List<bool>>();
+
         public string database_source_file = "";
         public bool checkcancel = false;
         public string sort_mode = "number";
@@ -22,11 +22,10 @@ namespace WindowsFormsApp1
             FORM1 = f1;
         }
 
-        public List<int> filter_results(string loc, string type, string num, string mac, string make, string model, string version, string serial, string os, string user, string dept, DateTime cal, string comments, bool datecheck, int dateradio, bool retiredcheck, List<List<String>> inventory_database, bool narrow)
+        public List<int> filter_results(string loc, string type, string num, string mac, string make, string model, string version, string serial, string os, string user, string dept, DateTime cal, string comments, bool datecheck, int dateradio, bool retiredcheck, List<List<String>> inventory_database)
         {
 
             List<int> filtered_list = new List<int>();
-            highlight_list.Clear();
 
             bool locfound = false;
             bool typefound = false;
@@ -42,534 +41,277 @@ namespace WindowsFormsApp1
             bool datefound = false;
             bool commentsfound = false;
 
-            if (narrow == true)
+            bool narrow = true;
+
+            for (int i = 0; i < inventory_database.Count(); i++)
             {
-                for (int i = 0; i < inventory_database.Count(); i++)
+                locfound = false;
+                typefound = false;
+                numfound = false;
+                macfound = false;
+                makefound = false;
+                modelfound = false;
+                versionfound = false;
+                serialfound = false;
+                osfound = false;
+                userfound = false;
+                deptfound = false;
+                datefound = false;
+                commentsfound = false;
+
+                bool filtered = false;
+                bool bad_found = false;
+
+                if (retiredcheck == false)
                 {
-                    locfound = false;
-                    typefound = false;
-                    numfound = false;
-                    macfound = false;
-                    makefound = false;
-                    modelfound = false;
-                    versionfound = false;
-                    serialfound = false;
-                    osfound = false;
-                    userfound = false;
-                    deptfound = false;
-                    datefound = false;
-                    commentsfound = false;
-
-                    bool filtered = false;
-                    bool bad_found = false;
-
-                    if (retiredcheck == false)
+                    if (inventory_database[i][13].ToLower() == "t\n" || inventory_database[i][13].ToLower() == "t")
                     {
-                        if (inventory_database[i][13].ToLower() == "t\n" || inventory_database[i][13].ToLower() == "t")
-                        {
-                            bad_found = true;
-                        }
-                    }
-
-                    if (retiredcheck == true)
-                    {
-                        if (inventory_database[i][13].ToLower() == "f\n" || inventory_database[i][13].ToLower() == "f")
-                        {
-                            bad_found = true;
-                        }
-                    }
-
-                    if (bad_found == false)
-                    {
-                        if (loc == "" && type == "" && num == "" && mac == "" && make == "" && model == "" && version == "" && serial == "" && os == "" && user == "" && dept == "" && datecheck == false && comments == "")
-                        {
-                            filtered = true;
-                        }
-                        else
-                        {
-                            if (loc != "")
-                            {
-                                if (inventory_database[i][0].ToLower().Contains(loc.ToLower()))
-                                {
-                                    filtered = true;
-                                    locfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (type != "")
-                            {
-                                if (inventory_database[i][1].ToLower().Contains(type.ToLower()))
-                                {
-                                    filtered = true;
-                                    typefound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (num != "")
-                            {
-                                if (inventory_database[i][2].ToLower().Contains(num.ToLower()))
-                                {
-                                    filtered = true;
-                                    numfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (mac != "")
-                            {
-                                if (inventory_database[i][3].ToLower().Contains(mac.ToLower()))
-                                {
-                                    filtered = true;
-                                    macfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (make != "")
-                            {
-                                if (inventory_database[i][4].ToLower().Contains(make.ToLower()))
-                                {
-                                    filtered = true;
-                                    makefound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (model != "")
-                            {
-                                if (inventory_database[i][5].ToLower().Contains(model.ToLower()))
-                                {
-                                    filtered = true;
-                                    modelfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (version != "")
-                            {
-                                if (inventory_database[i][6].ToLower().Contains(version.ToLower()))
-                                {
-                                    filtered = true;
-                                    versionfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (serial != "")
-                            {
-                                if (inventory_database[i][7].ToLower().Contains(serial.ToLower()))
-                                {
-                                    filtered = true;
-                                    serialfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (os != "")
-                            {
-                                if (inventory_database[i][8].ToLower().Contains(os.ToLower()))
-                                {
-                                    filtered = true;
-                                    osfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (user != "")
-                            {
-                                if (inventory_database[i][9].ToLower().Contains(user.ToLower()))
-                                {
-                                    filtered = true;
-                                    userfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (dept != "")
-                            {
-                                if (inventory_database[i][10].ToLower().Contains(dept.ToLower()))
-                                {
-                                    filtered = true;
-                                    deptfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-                            if (datecheck == true)
-                            {
-                                if (inventory_database[i][11] != "")
-                                {
-                                    DateTime crap;
-                                    if (DateTime.TryParse(inventory_database[i][11], out crap))
-                                    {
-                                        DateTime converted_date = DateTime.Parse(inventory_database[i][11]);
-
-                                        if (dateradio == 0)
-                                        {
-                                            if (converted_date == cal)
-                                            {
-                                                filtered = true;
-                                                datefound = true;
-                                            }
-                                            else
-                                            {
-                                                bad_found = true;
-                                            }
-                                        }
-
-                                        if (dateradio == 1)
-                                        {
-                                            if (converted_date < cal)
-                                            {
-                                                filtered = true;
-                                                datefound = true;
-                                            }
-                                            else
-                                            {
-                                                bad_found = true;
-                                            }
-                                        }
-
-                                        if (dateradio == 2)
-                                        {
-                                            if (converted_date > cal)
-                                            {
-                                                filtered = true;
-                                                datefound = true;
-                                            }
-                                            else
-                                            {
-                                                bad_found = true;
-                                            }
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-
-
-                            if (comments != "")
-                            {
-                                if (inventory_database[i][12].ToLower().Contains(comments.ToLower()))
-                                {
-                                    filtered = true;
-                                    commentsfound = true;
-                                }
-                                else
-                                {
-                                    bad_found = true;
-                                }
-                            }
-                        }
-                    }
-
-                    if (bad_found == true)
-                    {
-                        filtered = false;
-                        //dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[0].Style.BackColor = buttonLOCATIONCOLOR.BackColor;
-                    }
-
-                    if (filtered == true)
-                    {
-                        filtered_list.Add(i);
-                        List<bool> colorlist = new List<bool>();
-
-                        colorlist.Add(locfound);
-                        colorlist.Add(typefound);
-                        colorlist.Add(numfound);
-                        colorlist.Add(macfound);
-                        colorlist.Add(makefound);
-                        colorlist.Add(modelfound);
-                        colorlist.Add(versionfound);
-                        colorlist.Add(serialfound);
-                        colorlist.Add(osfound);
-                        colorlist.Add(userfound);
-                        colorlist.Add(deptfound);
-                        colorlist.Add(datefound);
-                        colorlist.Add(commentsfound);
-
-                        highlight_list.Add(colorlist);
+                        bad_found = true;
                     }
                 }
-            }
 
-            else
-            {
-                for (int i = 0; i < inventory_database.Count(); i++)
+                if (retiredcheck == true)
                 {
-                    locfound = false;
-                    typefound = false;
-                    numfound = false;
-                    macfound = false;
-                    makefound = false;
-                    modelfound = false;
-                    versionfound = false;
-                    serialfound = false;
-                    osfound = false;
-                    userfound = false;
-                    deptfound = false;
-                    datefound = false;
-                    commentsfound = false;
-
-                    bool filtered = false;
-                    bool bad_found = false;
-
-                    if (retiredcheck == false)
+                    if (inventory_database[i][13].ToLower() == "f\n" || inventory_database[i][13].ToLower() == "f")
                     {
-                        if (inventory_database[i][13].ToLower() == "t\n" || inventory_database[i][13].ToLower() == "t")
-                        {
-                            bad_found = true;
-                        }
+                        bad_found = true;
                     }
+                }
 
-                    if (retiredcheck == true)
+                if (bad_found == false)
+                {
+                    if (loc == "" && type == "" && num == "" && mac == "" && make == "" && model == "" && version == "" && serial == "" && os == "" && user == "" && dept == "" && datecheck == false && comments == "")
                     {
-                        if (inventory_database[i][13].ToLower() == "f\n" || inventory_database[i][13].ToLower() == "f")
-                        {
-                            bad_found = true;
-                        }
+                        filtered = true;
                     }
-
-                    if (bad_found == false)
+                    else
                     {
-                        if (loc == "" && type == "" && num == "" && mac == "" && make == "" && model == "" && version == "" && serial == "" && os == "" && user == "" && dept == "" && datecheck == false && comments == "")
+                        if (loc != "")
                         {
-                            filtered = true;
+                            if (inventory_database[i][0].ToLower().Contains(loc.ToLower()))
+                            {
+                                filtered = true;
+                                locfound = true;
+                            }
+                            else
+                            {
+                                bad_found = true;
+                            }
                         }
-                        else
+
+                        if (type != "")
                         {
-                            if (loc != "")
+                            if (inventory_database[i][1].ToLower().Contains(type.ToLower()))
                             {
-                                if (inventory_database[i][0].ToLower().Contains(loc.ToLower()))
-                                {
-                                    filtered = true;
-                                    locfound = true;
-                                }
+                                filtered = true;
+                                typefound = true;
                             }
-
-                            if (type != "")
+                            else
                             {
-                                if (inventory_database[i][1].ToLower().Contains(type.ToLower()))
-                                {
-                                    filtered = true;
-                                    typefound = true;
-                                }
+                                bad_found = true;
                             }
+                        }
 
-                            if (num != "")
+                        if (num != "")
+                        {
+                            if (inventory_database[i][2].ToLower().Contains(num.ToLower()))
                             {
-                                if (inventory_database[i][2].ToLower().Contains(num.ToLower()))
-                                {
-                                    filtered = true;
-                                    numfound = true;
-                                }
+                                filtered = true;
+                                numfound = true;
                             }
-
-                            if (mac != "")
+                            else
                             {
-                                if (inventory_database[i][3].ToLower().Contains(mac.ToLower()))
-                                {
-                                    filtered = true;
-                                    macfound = true;
-                                }
+                                bad_found = true;
                             }
+                        }
 
-                            if (make != "")
+                        if (mac != "")
+                        {
+                            if (inventory_database[i][3].ToLower().Contains(mac.ToLower()))
                             {
-                                if (inventory_database[i][4].ToLower().Contains(make.ToLower()))
-                                {
-                                    filtered = true;
-                                    makefound = true;
-                                }
+                                filtered = true;
+                                macfound = true;
                             }
-
-                            if (model != "")
+                            else
                             {
-                                if (inventory_database[i][5].ToLower().Contains(model.ToLower()))
-                                {
-                                    filtered = true;
-                                    modelfound = true;
-                                }
+                                bad_found = true;
                             }
+                        }
 
-                            if (version != "")
+                        if (make != "")
+                        {
+                            if (inventory_database[i][4].ToLower().Contains(make.ToLower()))
                             {
-                                if (inventory_database[i][6].ToLower().Contains(version.ToLower()))
-                                {
-                                    filtered = true;
-                                    versionfound = true;
-                                }
+                                filtered = true;
+                                makefound = true;
                             }
-
-                            if (serial != "")
+                            else
                             {
-                                if (inventory_database[i][7].ToLower().Contains(serial.ToLower()))
-                                {
-                                    filtered = true;
-                                    serialfound = true;
-                                }
+                                bad_found = true;
                             }
+                        }
 
-                            if (os != "")
+                        if (model != "")
+                        {
+                            if (inventory_database[i][5].ToLower().Contains(model.ToLower()))
                             {
-                                if (inventory_database[i][8].ToLower().Contains(os.ToLower()))
-                                {
-                                    filtered = true;
-                                    osfound = true;
-                                }
+                                filtered = true;
+                                modelfound = true;
                             }
-
-                            if (user != "")
+                            else
                             {
-                                if (inventory_database[i][9].ToLower().Contains(user.ToLower()))
-                                {
-                                    filtered = true;
-                                    userfound = true;
-                                }
+                                bad_found = true;
                             }
+                        }
 
-                            if (dept != "")
+                        if (version != "")
+                        {
+                            if (inventory_database[i][6].ToLower().Contains(version.ToLower()))
                             {
-                                if (inventory_database[i][10].ToLower().Contains(dept.ToLower()))
-                                {
-                                    filtered = true;
-                                    deptfound = true;
-                                }
+                                filtered = true;
+                                versionfound = true;
                             }
-
-                            if (datecheck == true)
+                            else
                             {
-                                if (inventory_database[i][11] != "")         
+                                bad_found = true;
+                            }
+                        }
+
+                        if (serial != "")
+                        {
+                            if (inventory_database[i][7].ToLower().Contains(serial.ToLower()))
+                            {
+                                filtered = true;
+                                serialfound = true;
+                            }
+                            else
+                            {
+                                bad_found = true;
+                            }
+                        }
+
+                        if (os != "")
+                        {
+                            if (inventory_database[i][8].ToLower().Contains(os.ToLower()))
+                            {
+                                filtered = true;
+                                osfound = true;
+                            }
+                            else
+                            {
+                                bad_found = true;
+                            }
+                        }
+
+                        if (user != "")
+                        {
+                            if (inventory_database[i][9].ToLower().Contains(user.ToLower()))
+                            {
+                                filtered = true;
+                                userfound = true;
+                            }
+                            else
+                            {
+                                bad_found = true;
+                            }
+                        }
+
+                        if (dept != "")
+                        {
+                            if (inventory_database[i][10].ToLower().Contains(dept.ToLower()))
+                            {
+                                filtered = true;
+                                deptfound = true;
+                            }
+                            else
+                            {
+                                bad_found = true;
+                            }
+                        }
+
+                        if (datecheck == true)
+                        {
+                            if (inventory_database[i][11] != "")
+                            {
+                                DateTime crap;
+                                if (DateTime.TryParse(inventory_database[i][11], out crap))
                                 {
-                                    DateTime crap;
-                                    if (DateTime.TryParse(inventory_database[i][11], out crap))
+                                    DateTime converted_date = DateTime.Parse(inventory_database[i][11]);
+
+                                    if (dateradio == 0)
                                     {
-                                        DateTime converted_date = DateTime.Parse(inventory_database[i][11]);
-
-                                        if (dateradio == 0)
+                                        if (converted_date == cal)
                                         {
-                                            if (converted_date == cal)
-                                            {
-                                                filtered = true;
-                                                datefound = true;
-                                            }
+                                            filtered = true;
+                                            datefound = true;
                                         }
-
-                                        if (dateradio == 1)
+                                        else
                                         {
-                                            if (converted_date < cal)
-                                            {
-                                                filtered = true;
-                                                datefound = true;
-                                            }
-                                        }
-
-                                        if (dateradio == 2)
-                                        {
-                                            if (converted_date > cal)
-                                            {
-                                                filtered = true;
-                                                datefound = true;
-                                            }
+                                            bad_found = true;
                                         }
                                     }
-                                    else
+
+                                    if (dateradio == 1)
                                     {
-                                        datefound = false;
-                                        filtered = false;
+                                        if (converted_date < cal)
+                                        {
+                                            filtered = true;
+                                            datefound = true;
+                                        }
+                                        else
+                                        {
+                                            bad_found = true;
+                                        }
+                                    }
+
+                                    if (dateradio == 2)
+                                    {
+                                        if (converted_date > cal)
+                                        {
+                                            filtered = true;
+                                            datefound = true;
+                                        }
+                                        else
+                                        {
+                                            bad_found = true;
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    bad_found = true;
-                                }
                             }
-
-                            if (comments != "")
+                            else
                             {
-                                if (inventory_database[i][12].ToLower().Contains(comments.ToLower()))
-                                {
-                                    filtered = true;
-                                    commentsfound = true;
-                                }
+                                bad_found = true;
                             }
+                        }
 
-                            if (locfound == false && typefound == false && numfound == false && macfound == false && makefound == false && modelfound == false && versionfound == false && serialfound == false && osfound == false && userfound == false && deptfound == false && datefound == false && commentsfound == false)
+
+                        if (comments != "")
+                        {
+                            if (inventory_database[i][12].ToLower().Contains(comments.ToLower()))
+                            {
+                                filtered = true;
+                                commentsfound = true;
+                            }
+                            else
                             {
                                 bad_found = true;
                             }
                         }
                     }
+                }
 
-                    //this seems redundant
-                    if (bad_found == true)
-                    {
-                        filtered = false;
-                        //dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[0].Style.BackColor = buttonLOCATIONCOLOR.BackColor;
-                    }
+                if (bad_found == true)
+                {
+                    filtered = false;
+                    //dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[0].Style.BackColor = buttonLOCATIONCOLOR.BackColor;
+                }
 
-                    if (filtered == true)
-                    {
-                        filtered_list.Add(i);
-                        List<bool> colorlist = new List<bool>();
-
-                        colorlist.Add(locfound);
-                        colorlist.Add(typefound);
-                        colorlist.Add(numfound);
-                        colorlist.Add(macfound);
-                        colorlist.Add(makefound);
-                        colorlist.Add(modelfound);
-                        colorlist.Add(versionfound);
-                        colorlist.Add(serialfound);
-                        colorlist.Add(osfound);
-                        colorlist.Add(userfound);
-                        colorlist.Add(deptfound);
-                        colorlist.Add(datefound);
-                        colorlist.Add(commentsfound);
-
-                        highlight_list.Add(colorlist);
-                    }
+                if (filtered == true)
+                {
+                    filtered_list.Add(i);
+                    List<bool> colorlist = new List<bool>();
                 }
             }
-
             return filtered_list;
         }
 
@@ -759,7 +501,6 @@ namespace WindowsFormsApp1
         {
             //This is the reset method. Everything needs to be reset as if the program has restarted.
             inventory_database = new List<List<string>>();
-            highlight_list = new List<List<bool>>();
             database_source_file = "";
 
             FORM1.toolStripStatusLabel1.Text = "";

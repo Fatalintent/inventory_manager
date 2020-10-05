@@ -57,7 +57,6 @@ namespace WindowsFormsApp1
             dataOUTPUT.Height = this.Height - 120; //90
 
         }
-
         private void UpdateInventory()
         {
             sort_mode = "Loading";
@@ -67,20 +66,16 @@ namespace WindowsFormsApp1
             {
                 RefreshCombos();
                 RefreshList();
-
                 EnableControls();
                 this.Text = program_title + " | " + DM.database_source_file;
             }
             CloseNotification();
-
         }
-
         private void CloseInventory()
         {
             listbox_tracker = new List<int>();
             track_selected_index = 0;
             dataOUTPUT.Rows.Clear();
-
             DisableControls();
         }
 
@@ -94,9 +89,7 @@ namespace WindowsFormsApp1
                 RefreshCombos();
                 RefreshList();
                 CloseNotification();
-            }
-
-            
+            }  
         }
 
         public void RecordSort()
@@ -105,7 +98,6 @@ namespace WindowsFormsApp1
             DatabaseManager dbm = new DatabaseManager();
             DM.inventory_database = dbm.SortDatabase(DM.inventory_database, sort_mode);
             RefreshList();
-
             CloseNotification();
         }
 
@@ -126,7 +118,6 @@ namespace WindowsFormsApp1
             checkPURCHASEDATE.Checked = false;
             textCOMMENTS.Text = "";
             CloseNotification();
-
             RefreshList();
         }
         public void DeleteRecord()
@@ -145,7 +136,6 @@ namespace WindowsFormsApp1
                     DM.inventory_database.RemoveAt(listbox_tracker[track_selected_index]);
                     RefreshList();
                     RefreshCombos();
-
                     changes_to_data = true;
                 }
             }
@@ -205,10 +195,8 @@ namespace WindowsFormsApp1
 
                 EditForm.textCOMMENTS.Text = dataOUTPUT[12, dataOUTPUT.CurrentCell.RowIndex].Value.ToString();
                 EditForm.comboRETIRED.Text = dataOUTPUT[13, dataOUTPUT.CurrentCell.RowIndex].Value.ToString();
-
                 EditForm.button1.Text = "Edit";
                 EditForm.Text = "Edit Record";
-
                 EditForm.ShowDialog();
             }
         }
@@ -238,57 +226,12 @@ namespace WindowsFormsApp1
                 retiredcheck = true;
 
             listbox_tracker.Clear();
-            //Console.WriteLine(comboNUMBER.Text);
-            listbox_tracker = DM.filter_results(comboLOCATION.Text, comboTYPE.Text, comboNUMBER.Text, comboMAC.Text, comboMAKE.Text, comboMODEL.Text, comboVERSION.Text, comboSERIAL.Text, comboOS.Text, comboUSER.Text, comboDEPARTMENT.Text, DateTime.Parse(monthCalendar1.SelectionRange.Start.ToShortDateString()), textCOMMENTS.Text, datecheck, radiodate, retiredcheck, DM.inventory_database, checkNARROWRESULTS.Checked);
-          
-            for (int i = 0; i < listbox_tracker.Count(); i++)
-            {
-                dataOUTPUT.Rows.Add(DM.inventory_database[listbox_tracker[i]][0], DM.inventory_database[listbox_tracker[i]][1], DM.inventory_database[listbox_tracker[i]][2], DM.inventory_database[listbox_tracker[i]][3], DM.inventory_database[listbox_tracker[i]][4], DM.inventory_database[listbox_tracker[i]][5], DM.inventory_database[listbox_tracker[i]][6], DM.inventory_database[listbox_tracker[i]][7], DM.inventory_database[listbox_tracker[i]][8], DM.inventory_database[listbox_tracker[i]][9], DM.inventory_database[listbox_tracker[i]][10], DM.inventory_database[listbox_tracker[i]][11], DM.inventory_database[listbox_tracker[i]][12], DM.inventory_database[listbox_tracker[i]][13]);
+            listbox_tracker = DM.filter_results(comboLOCATION.Text, comboTYPE.Text, comboNUMBER.Text, comboMAC.Text, comboMAKE.Text, comboMODEL.Text, comboVERSION.Text, comboSERIAL.Text, comboOS.Text, comboUSER.Text, comboDEPARTMENT.Text, DateTime.Parse(monthCalendar1.SelectionRange.Start.ToShortDateString()), textCOMMENTS.Text, datecheck, radiodate, retiredcheck, DM.inventory_database);
 
-
-                if (DM.highlight_list[i][0] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[0].Style.BackColor = buttonLOCATIONCOLOR.BackColor;
-
-                if (DM.highlight_list[i][1] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[1].Style.BackColor = buttonTYPECOLOR.BackColor;
-
-                if (DM.highlight_list[i][2] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[2].Style.BackColor = buttonNUMBERCOLOR.BackColor;
-
-                if (DM.highlight_list[i][3] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[3].Style.BackColor = buttonMACCOLOR.BackColor;
-
-                if (DM.highlight_list[i][4] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[4].Style.BackColor = buttonMAKECOLOR.BackColor;
-
-                if (DM.highlight_list[i][5] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[5].Style.BackColor = buttonMODELCOLOR.BackColor;
-
-                if (DM.highlight_list[i][6] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[6].Style.BackColor = buttonVERSIONCOLOR.BackColor;
-
-                if (DM.highlight_list[i][7] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[7].Style.BackColor = buttonSERIALCOLOR.BackColor;
-
-                if (DM.highlight_list[i][8] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[8].Style.BackColor = buttonOSCOLOR.BackColor;
-
-                if (DM.highlight_list[i][9] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[9].Style.BackColor = buttonUSERCOLOR.BackColor;
-
-                if (DM.highlight_list[i][10] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[10].Style.BackColor = buttonDEPARTMENTCOLOR.BackColor;
-
-                if (DM.highlight_list[i][11] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[11].Style.BackColor = buttonPURCHASEDATECOLOR.BackColor;
-
-                if (DM.highlight_list[i][12] == true)
-                    dataOUTPUT.Rows[dataOUTPUT.RowCount - 1].Cells[12].Style.BackColor = buttonCOMMENTSCOLOR.BackColor;
-            }
-
+            for (int i = 0; i < listbox_tracker.Count(); i++) { dataOUTPUT.Rows.Add(DM.inventory_database[listbox_tracker[i]][0], DM.inventory_database[listbox_tracker[i]][1], DM.inventory_database[listbox_tracker[i]][2], DM.inventory_database[listbox_tracker[i]][3], DM.inventory_database[listbox_tracker[i]][4], DM.inventory_database[listbox_tracker[i]][5], DM.inventory_database[listbox_tracker[i]][6], DM.inventory_database[listbox_tracker[i]][7], DM.inventory_database[listbox_tracker[i]][8], DM.inventory_database[listbox_tracker[i]][9], DM.inventory_database[listbox_tracker[i]][10], DM.inventory_database[listbox_tracker[i]][11], DM.inventory_database[listbox_tracker[i]][12], DM.inventory_database[listbox_tracker[i]][13]); }
+            
             toolStripStatusLabel1.Text = "Total Records in Inventory: " + DM.inventory_database.Count();
             toolStripStatusLabel2.Text = "Total Records in Current View: " + dataOUTPUT.Rows.Count;
-
         }
 
         public static bool IsDateTime(string txtDate)
@@ -325,7 +268,6 @@ namespace WindowsFormsApp1
             comboUSER.Items.Clear();
             comboDEPARTMENT.Items.Clear();
 
-            //make combo.Text = "" for each...
             comboLOCATION.Text = "";
             comboTYPE.Text = "";
             comboNUMBER.Text = "";
@@ -452,93 +394,37 @@ namespace WindowsFormsApp1
             foreach (var item in list_DEPARTMENT) { comboDEPARTMENT.Items.Add(item); }
 
             foreach (string item in list_LOCATION)
-            {
-                if (item == oldLOCATION)
-                {
-                    comboLOCATION.Text = item;
-                }
-            }
+                if (item == oldLOCATION) { comboLOCATION.Text = item; }
 
             foreach (string item in list_TYPE)
-            {
-                if (item == oldTYPE)
-                {
-                    comboTYPE.Text = item;
-                }
-            }
+                if (item == oldTYPE) { comboTYPE.Text = item; }
 
             foreach (string item in list_NUMBER)
-            {
-                if (item == oldNUMBER)
-                {
-                    comboNUMBER.Text = item;
-                }
-            }
+                if (item == oldNUMBER) { comboNUMBER.Text = item; }
 
             foreach (string item in list_MAC)
-            {
-                if (item == oldMAC)
-                {
-                    comboMAC.Text = item;
-                }
-            }
+                if (item == oldMAC) { comboMAC.Text = item; }
 
             foreach (string item in list_MAKE)
-            {
-                if (item == oldMAKE)
-                {
-                    comboMAKE.Text = item;
-                }
-            }
+                if (item == oldMAKE) { comboMAKE.Text = item; }
 
             foreach (string item in list_MODEL)
-            {
-                if (item == oldMODEL)
-                {
-                    comboMODEL.Text = item;
-                }
-            }
+                if (item == oldMODEL) { comboMODEL.Text = item; }
 
             foreach (string item in list_TYPE)
-            {
-                if (item == oldVERSION)
-                {
-                    comboVERSION.Text = item;
-                }
-            }
+                if (item == oldVERSION) { comboVERSION.Text = item; }
 
             foreach (string item in list_SERIAL)
-            {
-                if (item == oldSERIAL)
-                {
-                    comboSERIAL.Text = item;
-                }
-            }
+                if (item == oldSERIAL) { comboSERIAL.Text = item; }
 
             foreach (string item in list_OS)
-            {
-                if (item == oldOS)
-                {
-                    comboOS.Text = item;
-                }
-            }
+                if (item == oldOS) { comboOS.Text = item; }
 
             foreach (string item in list_USER)
-            {
-                if (item == oldUSER)
-                {
-                    comboUSER.Text = item;
-                }
-            }
-            
-            foreach (string item in list_DEPARTMENT)
-            {
-                if (item == oldDEPARTMENT)
-                {
-                    comboDEPARTMENT.Text = item;
-                }
-            }
+                if (item == oldUSER) { comboUSER.Text = item; }
 
+            foreach (string item in list_DEPARTMENT)
+                if (item == oldDEPARTMENT) { comboDEPARTMENT.Text = item; }
         }
 
         public void DisableControls()
@@ -554,7 +440,6 @@ namespace WindowsFormsApp1
             toolStripButtonSearchSelected.Enabled = false;
             toolStripButtonClearFilters.Enabled = false;
             checkRETIRED.Enabled = false;
-            checkNARROWRESULTS.Enabled = false;
 
             comboLOCATION.Enabled = false;
             comboTYPE.Enabled = false;
@@ -568,19 +453,6 @@ namespace WindowsFormsApp1
             comboUSER.Enabled = false;
             comboDEPARTMENT.Enabled = false;
             textCOMMENTS.Enabled = false;
-
-            buttonLOCATIONCOLOR.Enabled = false;
-            buttonTYPECOLOR.Enabled = false;
-            buttonNUMBERCOLOR.Enabled = false;
-            buttonMACCOLOR.Enabled = false;
-            buttonMAKECOLOR.Enabled = false;
-            buttonMODELCOLOR.Enabled = false;
-            buttonVERSIONCOLOR.Enabled = false;
-            buttonSERIALCOLOR.Enabled = false;
-            buttonOSCOLOR.Enabled = false;
-            buttonUSERCOLOR.Enabled = false;
-            buttonDEPARTMENTCOLOR.Enabled = false;
-            buttonPURCHASEDATECOLOR.Enabled = false;
 
             saveToolStripMenuItem.Enabled = false;
             closeToolStripMenuItem.Enabled = false;
@@ -632,7 +504,6 @@ namespace WindowsFormsApp1
             toolStripButtonSearchSelected.Enabled = true;
             toolStripButtonClearFilters.Enabled = true;
             checkRETIRED.Enabled = true;
-            checkNARROWRESULTS.Enabled = true;
 
             comboLOCATION.Enabled = true;
             comboTYPE.Enabled = true;
@@ -647,19 +518,6 @@ namespace WindowsFormsApp1
             comboDEPARTMENT.Enabled = true;
             textCOMMENTS.Enabled = true;
 
-            buttonLOCATIONCOLOR.Enabled = true;
-            buttonTYPECOLOR.Enabled = true;
-            buttonNUMBERCOLOR.Enabled = true;
-            buttonMACCOLOR.Enabled = true;
-            buttonMAKECOLOR.Enabled = true;
-            buttonMODELCOLOR.Enabled = true;
-            buttonVERSIONCOLOR.Enabled = true;
-            buttonSERIALCOLOR.Enabled = true;
-            buttonOSCOLOR.Enabled = true;
-            buttonUSERCOLOR.Enabled = true;
-            buttonDEPARTMENTCOLOR.Enabled = true;
-            buttonPURCHASEDATECOLOR.Enabled = true;
-
             saveToolStripMenuItem.Enabled = true;
             closeToolStripMenuItem.Enabled = true;
             recordsToolStripMenuItem.Enabled = true;
@@ -668,7 +526,6 @@ namespace WindowsFormsApp1
             sortToolStripMenuItem.Enabled = true;
             quickBackupToolStripMenuItem.Enabled = true;
             exportToolStripMenuItem1.Enabled = true;
-
             groupBox2.Enabled = true;
         }
         //CONTROLS CODE
@@ -681,9 +538,7 @@ namespace WindowsFormsApp1
             dataOUTPUT.Height = this.Height - 80;
             this.MinimumSize = new System.Drawing.Size(979, 695);
             dataOUTPUT.DoubleBuffered(true);
-
             dataOUTPUT.ColumnCount = 14;
-
             dataOUTPUT.Columns[0].Name = "Location";
             dataOUTPUT.Columns[1].Name = "Type";
             dataOUTPUT.Columns[2].Name = "Number";
@@ -710,109 +565,17 @@ namespace WindowsFormsApp1
             AdjustSize();
         }
 
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
+        private void checkBox3_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
+        private void checkBox2_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
+        private void checkBox4_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
-        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            track_selected_index = dataOUTPUT.CurrentRow.Index;
-        }
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) { track_selected_index = dataOUTPUT.CurrentRow.Index; }
 
-        private void checkPURCHASEDATE_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
-
-        // ################################ BUTTON COLOR #############################
-        #region
-        private void buttonLOCATIONCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonLOCATIONCOLOR.BackColor = GetNewColor(buttonLOCATIONCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonTYPECOLOR_Click(object sender, EventArgs e)
-        {
-            buttonTYPECOLOR.BackColor = GetNewColor(buttonTYPECOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonNUMBERCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonNUMBERCOLOR.BackColor = GetNewColor(buttonNUMBERCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonMACCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonMACCOLOR.BackColor = GetNewColor(buttonMACCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonMAKECOLOR_Click(object sender, EventArgs e)
-        {
-            buttonMAKECOLOR.BackColor = GetNewColor(buttonMAKECOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonMODELCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonMODELCOLOR.BackColor = GetNewColor(buttonMODELCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonVERSIONCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonVERSIONCOLOR.BackColor = GetNewColor(buttonVERSIONCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonSERIALCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonSERIALCOLOR.BackColor = GetNewColor(buttonSERIALCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonOSCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonOSCOLOR.BackColor = GetNewColor(buttonOSCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonUSERCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonUSERCOLOR.BackColor = GetNewColor(buttonUSERCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonDEPARTMENTCOLOR_Click(object sender, EventArgs e)
-        {
-            buttonDEPARTMENTCOLOR.BackColor = GetNewColor(buttonDEPARTMENTCOLOR.BackColor);
-            RefreshList();
-        }
-
-        private void buttonPURCHASEDATECOLOR_Click(object sender, EventArgs e)
-        {
-            buttonPURCHASEDATECOLOR.BackColor = GetNewColor(buttonPURCHASEDATECOLOR.BackColor);
-            RefreshList();
-        }
+        private void checkPURCHASEDATE_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
         private Color GetNewColor(Color current_color)
         {
@@ -824,7 +587,6 @@ namespace WindowsFormsApp1
             }
             return current_color;
         }
-        #endregion
 
         // ################################ COMBO SELECTED INDEX CHANGE ##############
         #region
@@ -1077,25 +839,13 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void buttonCLEARFILTERS_Click(object sender, EventArgs e)
-        {
-            ClearFilters();
-        }
+        private void buttonCLEARFILTERS_Click(object sender, EventArgs e) { ClearFilters(); }
 
-        private void radioNARROWRESULTS_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
+        private void radioNARROWRESULTS_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
-        private void radioEXPANDRESULTS_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
+        private void radioEXPANDRESULTS_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            AdjustSize();
-        }
+        private void Form1_Resize(object sender, EventArgs e) { AdjustSize(); }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1103,33 +853,15 @@ namespace WindowsFormsApp1
             this.Text = program_title + " | " + DM.database_source_file;
         }
 
-        
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) { this.Close(); }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void addNewToolStripMenuItem_Click(object sender, EventArgs e) { AddRecord(); }
 
-        private void addNewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddRecord();
-        }
+        private void editToolStripMenuItem_Click(object sender, EventArgs e) { EditRecord(); }
 
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EditRecord();
-        }
+        private void checkNARROWRESULTS_CheckedChanged(object sender, EventArgs e) { RefreshList(); }
 
-        private void checkNARROWRESULTS_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshList();
-        }
-
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DeleteRecord();
-        }
-
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e) { DeleteRecord(); }
         private void spreadsheetViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Sview sv = new Sview(this, DM);
@@ -1143,8 +875,6 @@ namespace WindowsFormsApp1
                 DialogResult dialogResult = MessageBox.Show("Would you like to save the changes to your current inventory before closing it?", "Save Current Inventory?", MessageBoxButtons.YesNoCancel);
                 if (dialogResult == DialogResult.Yes)
                 {
-
-                    //this can just call save method from DataManager.
                     int listitems = 0;
                     StreamWriter SW = new StreamWriter(DM.database_source_file); // database_source_file
 
@@ -1164,7 +894,6 @@ namespace WindowsFormsApp1
                     OpenInventory();
                 }
             }
-
             else
             {
                 DM.CloseInventory();
@@ -1187,7 +916,6 @@ namespace WindowsFormsApp1
                     DM.CloseInventory();
                 }
             }
-
             else
             {
                 DM.CloseInventory();
@@ -1208,7 +936,6 @@ namespace WindowsFormsApp1
                 {
                     DM.CloseInventory();
                 }
-
             }
             else
             {
@@ -1226,8 +953,6 @@ namespace WindowsFormsApp1
         {
             DM.SaveInventoryAs();
         }
-
- 
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -1248,8 +973,6 @@ namespace WindowsFormsApp1
                     e.Cancel = true;
                 }
             }
-
-            //DM.CloseInventory();
         }
 
         private void numberToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1324,80 +1047,36 @@ namespace WindowsFormsApp1
             RecordSort();
         }
 
-        private void quickBackupToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DM.RunBackup();
-        }
+        private void quickBackupToolStripMenuItem_Click(object sender, EventArgs e) { DM.RunBackup(); }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            EditRecord();
-        }
+        private void button1_Click(object sender, EventArgs e) { EditRecord(); }
 
-        private void comboUSER_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboUSER_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboLOCATION_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboLOCATION_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboTYPE_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboTYPE_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboNUMBER_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboNUMBER_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboMAC_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboMAC_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboMAKE_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboMAKE_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboMODEL_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboMODEL_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboVERSION_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboVERSION_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboSERIAL_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboSERIAL_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboOS_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboOS_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void comboDEPARTMENT_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void comboDEPARTMENT_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            DeleteRecord();
-        }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            AddRecord();
-        }
+        private void button3_Click(object sender, EventArgs e) { DeleteRecord(); }
+
+        private void button2_Click(object sender, EventArgs e) { AddRecord(); }
 
         private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -1405,30 +1084,12 @@ namespace WindowsFormsApp1
             ReportForm.Show();
         }
 
-        private void textCOMMENTS_KeyUp(object sender, KeyEventArgs e)
-        {
-            RefreshList();
-        }
+        private void textCOMMENTS_KeyUp(object sender, KeyEventArgs e) { RefreshList(); }
+        private void ToolStripButton1_Click(object sender, EventArgs e) { AddRecord(); }
+        private void ToolStripButton2_Click(object sender, EventArgs e) { EditRecord(); }
+        private void ToolStripButton3_Click(object sender, EventArgs e) { DeleteRecord(); }
 
-        private void ToolStripButton1_Click(object sender, EventArgs e)
-        {
-            AddRecord();
-        }
-
-        private void ToolStripButton2_Click(object sender, EventArgs e)
-        {
-            EditRecord();
-        }
-
-        private void ToolStripButton3_Click(object sender, EventArgs e)
-        {
-            DeleteRecord();
-        }
-
-        private void ToolStripButton5_Click(object sender, EventArgs e)
-        {
-            ClearFilters();
-        }
+        private void ToolStripButton5_Click(object sender, EventArgs e) { ClearFilters(); }
 
         private void ToolStripButton4_Click(object sender, EventArgs e)
         {
@@ -1603,7 +1264,77 @@ namespace WindowsFormsApp1
         {
             RefreshList();
         }
+
+        private void btnLocationClear_Click(object sender, EventArgs e) 
+        { 
+            comboLOCATION.Text = "";
+            RefreshList();
+        }
+
+        private void btnTypeClear_Click(object sender, EventArgs e) 
+        { 
+            comboTYPE.Text = "";
+            RefreshList();
+        }
+
+        private void btnNumberClear_Click(object sender, EventArgs e) 
+        { 
+            comboNUMBER.Text = "";
+            RefreshList();
+        }
+
+        private void btnMACClear_Click(object sender, EventArgs e) 
+        { 
+            comboMAC.Text = "";
+            RefreshList();
+        }
+
+        private void btnMakeClear_Click(object sender, EventArgs e) 
+        { 
+            comboMAKE.Text = "";
+            RefreshList();
+        }
+
+        private void btnModelClear_Click(object sender, EventArgs e)
+        {
+            comboMODEL.Text = "";
+            RefreshList();
+        }
+
+        private void btnVersionClear_Click(object sender, EventArgs e)
+        {
+            comboVERSION.Text = "";
+            RefreshList();
+        }
+
+        private void btnSerialClear_Click(object sender, EventArgs e)
+        {
+            comboSERIAL.Text = "";
+            RefreshList();
+        }
+
+        private void btnOSClear_Click(object sender, EventArgs e)
+        {
+            comboOS.Text = "";
+            RefreshList();
+        }
+
+        private void btnUserClear_Click(object sender, EventArgs e)
+        {
+            comboUSER.Text = "";
+            RefreshList();
+        }
+
+        private void btnDepartmentClear_Click(object sender, EventArgs e)
+        {
+            comboDEPARTMENT.Text = "";
+            RefreshList();
+        }
+
+        private void btnCommentsClear_Click(object sender, EventArgs e)
+        {
+            textCOMMENTS.Text = "";
+            RefreshList();
+        }
     }
 }
-
-
