@@ -486,6 +486,7 @@ namespace WindowsFormsApp1
             sortToolStripMenuItem.Enabled = false;
             quickBackupToolStripMenuItem.Enabled = false;
             exportToolStripMenuItem1.Enabled = false;
+            reportingToolStripMenuItem.Enabled = false;
 
             groupBox2.Enabled = false;
 
@@ -550,6 +551,7 @@ namespace WindowsFormsApp1
             sortToolStripMenuItem.Enabled = true;
             quickBackupToolStripMenuItem.Enabled = true;
             exportToolStripMenuItem1.Enabled = true;
+            reportingToolStripMenuItem.Enabled = true;
             groupBox2.Enabled = true;
         }
         //CONTROLS CODE
