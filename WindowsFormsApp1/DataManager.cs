@@ -41,8 +41,6 @@ namespace WindowsFormsApp1
             bool datefound = false;
             bool commentsfound = false;
 
-            bool narrow = true;
-
             for (int i = 0; i < inventory_database.Count(); i++)
             {
                 locfound = false;
@@ -309,10 +307,152 @@ namespace WindowsFormsApp1
                 if (filtered == true)
                 {
                     filtered_list.Add(i);
-                    List<bool> colorlist = new List<bool>();
                 }
             }
             return filtered_list;
+        }
+
+        public List<int> report_filter(string report_type, string loc, string type, string num, string mac, string make, string model, string version, string serial, string os, string user, string dept, DateTime cal, string comments, bool datecheck, int dateradio, bool retiredcheck, List<List<String>> inventory_database)
+        {
+
+            //inventory_database = filter_results(loc, type, num, mac, make, model, version, serial, os, user, dept, cal, comments, datecheck, dateradio, retiredcheck, inventory_database);
+            List<int> filtered_list = new List<int>();
+
+            for (int i = 0; i < inventory_database.Count(); i++)
+            {
+                bool bad_found = true;
+
+
+                if (report_type == "number")
+                {
+                    bad_found = duplicate_finder(inventory_database, i, 2, inventory_database[i][2], retiredcheck);
+                    //Console.WriteLine(bad_found);
+                }
+
+                if (report_type == "user")
+                {
+                    bad_found = duplicate_finder(inventory_database, i, 9, inventory_database[i][9], retiredcheck);
+                    //Console.WriteLine(bad_found);
+                }
+
+
+
+
+                //if (datecheck == true)
+                //{
+                //    if (inventory_database[i][11] != "")
+                //    {
+                //        DateTime crap;
+                //        if (DateTime.TryParse(inventory_database[i][11], out crap))
+                //        {
+                //            DateTime converted_date = DateTime.Parse(inventory_database[i][11]);
+
+                //            if (dateradio == 0)
+                //            {
+                //                if (converted_date == cal)
+                //                {
+                //                    filtered = true;
+                //                    datefound = true;
+                //                }
+                //                else
+                //                {
+                //                    bad_found = true;
+                //                }
+                //            }
+
+                //            if (dateradio == 1)
+                //            {
+                //                if (converted_date < cal)
+                //                {
+                //                    filtered = true;
+                //                    datefound = true;
+                //                }
+                //                else
+                //                {
+                //                    bad_found = true;
+                //                }
+                //            }
+
+                //            if (dateradio == 2)
+                //            {
+                //                if (converted_date > cal)
+                //                {
+                //                    filtered = true;
+                //                    datefound = true;
+                //                }
+                //                else
+                //                {
+                //                    bad_found = true;
+                //                }
+                //            }
+                //        }
+                //    }
+                //    else
+                //    {
+                //        bad_found = true;
+                //    }
+                //}
+
+                if (bad_found == false)
+                {
+                    filtered_list.Add(i);
+                }
+            }
+            //filtered_list = filter_results(loc, type, num, mac, make, model, version, serial, os, user, dept, cal, comments, datecheck, dateradio, retiredcheck,  inventory_database);
+            return filtered_list;
+        }
+
+        public List<int> consolidate_lists(List<int> report_tracker, List<int> filter_tracker)
+        {
+            List<int> return_tracker = new List<int>();
+
+            for (int i = 0; i < filter_tracker.Count(); i++)
+            {
+                if (return_tracker.Contains(filter_tracker[i]) == false)
+                {
+                    if(report_tracker.Contains(filter_tracker[i]) == true)
+                    {
+                        return_tracker.Add(filter_tracker[i]);
+                    }
+                    
+                }
+            }
+
+            return return_tracker;
+        }
+        private bool duplicate_finder(List<List<String>> inventory_database, int current_record_number, int search_column, string search_term, bool retiredcheck)
+        {
+            bool found_duplicate = true;
+            for (int i = 0; i < inventory_database.Count(); i++)
+            {
+                if (i != current_record_number)
+                {
+                    if (retiredcheck == true)
+                    {
+                        if (inventory_database[i][13].ToLower() == "t\n" || inventory_database[i][13].ToLower() == "t")
+                        {
+                            if (inventory_database[i][search_column] == search_term)
+                            {
+                                found_duplicate = false;
+                            }
+                        }
+                    }
+
+                    if (retiredcheck == false)
+                    {
+                        if (inventory_database[i][13].ToLower() == "f\n" || inventory_database[i][13].ToLower() == "f")
+                        {
+                            if (inventory_database[i][search_column] == search_term)
+                            {
+                                found_duplicate = false;
+                            }
+                        }
+                    }
+
+
+                }
+            }
+            return found_duplicate;
         }
 
         public void SaveInventoryAs()
@@ -361,12 +501,9 @@ namespace WindowsFormsApp1
 
                     SW.Close();
 
-                    //MessageBox.Show("Inventory File: " + save_file + " has been saved.");
                     saved_okay = true;
                     FORM1.Text = FORM1.program_title + database_source_file;
                 }
-
-                //If the save dialog name returned is nothing, why do anything?
                 else
                 {
                     FORM1.Text = FORM1.program_title + database_source_file;
@@ -558,69 +695,9 @@ namespace WindowsFormsApp1
             return valid_check;
         }
 
-        //public void ExportEntireDatabase()
-        //{
-        //    int row = 0;
-        //    int col = 0;
-        //    string title_string = "";
-        //    string record_line = "";
-        //    string export_file = "";
 
-        //    bool[] cols = new bool[14];
-        //    int report_col_count = 0;
 
-        //    for (int i = 0; i < 14; i++)
-        //    {
-        //        cols[i] = true;
-        //    }
 
-        //    //make sure to sort by number for entire database just in case before exporting
-
-        //    title_string = "LOCATION, TYPE, NUMBER, MAC, MAKE, MODEL, VERSION, SERIAL, OS, USER, DEPARTMENT, PURCHASE DATE, COMMENTS, RETIRED"; 
-
-        //    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-        //    saveFileDialog1.Filter = "Comma Delimited Values|*.csv";
-        //    saveFileDialog1.Title = "Save as .csv (Compatible with Excel)";
-        //    saveFileDialog1.ShowDialog();
-
-        //    if (saveFileDialog1.FileName != "")
-        //    {
-        //        export_file = saveFileDialog1.FileName;
-        //        StreamWriter SW = new StreamWriter(export_file);
-        //        SW.WriteLine(title_string);
-        //        int report_current_col = 0;
-        //        while (row < FORM1.dataOUTPUT.RowCount)
-        //        {
-        //            while (col < FORM1.dataOUTPUT.ColumnCount)
-        //            {
-        //                if (cols[col] == true)
-        //                {
-        //                    //Console.WriteLine((col + 1) + " : " + report_col_count + " : " + report_current_col);
-        //                    if (report_current_col + 1 == report_col_count) //if (col + 1 == report_col_count)
-        //                    {
-        //                        record_line += FORM1.dataOUTPUT[col, row].Value.ToString();
-        //                    }
-        //                    else
-        //                    {
-        //                        record_line += FORM1.dataOUTPUT[col, row].Value.ToString() + ",";
-        //                    }
-        //                    report_current_col++;
-        //                }
-        //                col++;
-        //            }
-        //            report_current_col = 0;
-
-        //            SW.WriteLine(record_line);
-        //            record_line = "";
-        //            col = 0;
-        //            row++;
-        //        }
-
-        //        SW.Close();
-
-        //        MessageBox.Show("Entire Database: " + export_file + " has been exported as a .csv file. (Compatible with Excel)");
-
-        //    }
-        //}
+       
     }
 }

@@ -18,9 +18,11 @@ namespace WindowsFormsApp1
     {
         public List<int> listbox_tracker = new List<int>();
         public int track_selected_index = 0;
-        public string program_title = "Inventory Manager - 1.2";
+        public string program_title = "Inventory Manager - 1.3";
         public string sort_mode = "number";
         public bool changes_to_data = false;
+        bool report_mode = false;
+        string report_type = "";
         DataManager DM;
         Sorting SN;
 
@@ -34,6 +36,14 @@ namespace WindowsFormsApp1
             //MessageBox.Show(this.Width + " " + this.Height);
 
             DM = new DataManager(this);
+        }
+
+        private void number_rows()
+        {
+            foreach (DataGridViewRow row in dataOUTPUT.Rows)
+            {
+                row.HeaderCell.Value = (row.Index + 1).ToString();
+            }
         }
 
         public void DisplayNotification()
@@ -50,12 +60,10 @@ namespace WindowsFormsApp1
         {
             SN.Close();
         }
-
         private void AdjustSize()
         {
             dataOUTPUT.Width = this.Width - 400;
             dataOUTPUT.Height = this.Height - 120; //90
-
         }
         private void UpdateInventory()
         {
@@ -206,6 +214,9 @@ namespace WindowsFormsApp1
             bool datecheck = false;
             int radiodate = 0;
             bool retiredcheck = false;
+            List<int> filter_tracker = new List<int>();
+            List<int> report_tracker = new List<int>();
+            //List<int> _tracker = new List<int>();
 
             dataOUTPUT.Rows.Clear();
             dataOUTPUT.ColumnCount = 14;
@@ -226,12 +237,25 @@ namespace WindowsFormsApp1
                 retiredcheck = true;
 
             listbox_tracker.Clear();
-            listbox_tracker = DM.filter_results(comboLOCATION.Text, comboTYPE.Text, comboNUMBER.Text, comboMAC.Text, comboMAKE.Text, comboMODEL.Text, comboVERSION.Text, comboSERIAL.Text, comboOS.Text, comboUSER.Text, comboDEPARTMENT.Text, DateTime.Parse(monthCalendar1.SelectionRange.Start.ToShortDateString()), textCOMMENTS.Text, datecheck, radiodate, retiredcheck, DM.inventory_database);
+
+            if (report_mode == false)
+            {
+                listbox_tracker = DM.filter_results(comboLOCATION.Text, comboTYPE.Text, comboNUMBER.Text, comboMAC.Text, comboMAKE.Text, comboMODEL.Text, comboVERSION.Text, comboSERIAL.Text, comboOS.Text, comboUSER.Text, comboDEPARTMENT.Text, DateTime.Parse(monthCalendar1.SelectionRange.Start.ToShortDateString()), textCOMMENTS.Text, datecheck, radiodate, retiredcheck, DM.inventory_database);
+            }
+
+            if (report_mode == true)
+            {
+                report_tracker = DM.report_filter(report_type, comboLOCATION.Text, comboTYPE.Text, comboNUMBER.Text, comboMAC.Text, comboMAKE.Text, comboMODEL.Text, comboVERSION.Text, comboSERIAL.Text, comboOS.Text, comboUSER.Text, comboDEPARTMENT.Text, DateTime.Parse(monthCalendar1.SelectionRange.Start.ToShortDateString()), textCOMMENTS.Text, datecheck, radiodate, retiredcheck, DM.inventory_database);
+                filter_tracker = DM.filter_results(comboLOCATION.Text, comboTYPE.Text, comboNUMBER.Text, comboMAC.Text, comboMAKE.Text, comboMODEL.Text, comboVERSION.Text, comboSERIAL.Text, comboOS.Text, comboUSER.Text, comboDEPARTMENT.Text, DateTime.Parse(monthCalendar1.SelectionRange.Start.ToShortDateString()), textCOMMENTS.Text, datecheck, radiodate, retiredcheck, DM.inventory_database);
+                listbox_tracker = DM.consolidate_lists(report_tracker, filter_tracker);
+            }
 
             for (int i = 0; i < listbox_tracker.Count(); i++) { dataOUTPUT.Rows.Add(DM.inventory_database[listbox_tracker[i]][0], DM.inventory_database[listbox_tracker[i]][1], DM.inventory_database[listbox_tracker[i]][2], DM.inventory_database[listbox_tracker[i]][3], DM.inventory_database[listbox_tracker[i]][4], DM.inventory_database[listbox_tracker[i]][5], DM.inventory_database[listbox_tracker[i]][6], DM.inventory_database[listbox_tracker[i]][7], DM.inventory_database[listbox_tracker[i]][8], DM.inventory_database[listbox_tracker[i]][9], DM.inventory_database[listbox_tracker[i]][10], DM.inventory_database[listbox_tracker[i]][11], DM.inventory_database[listbox_tracker[i]][12], DM.inventory_database[listbox_tracker[i]][13]); }
             
             toolStripStatusLabel1.Text = "Total Records in Inventory: " + DM.inventory_database.Count();
             toolStripStatusLabel2.Text = "Total Records in Current View: " + dataOUTPUT.Rows.Count;
+
+            number_rows();
         }
 
         public static bool IsDateTime(string txtDate)
@@ -1336,5 +1360,46 @@ namespace WindowsFormsApp1
             textCOMMENTS.Text = "";
             RefreshList();
         }
+
+        private void numbersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report_mode = true;
+            report_type = "number";
+            RefreshList();
+            reportingToolStripMenuItem.BackColor = Color.Red;
+            sort_mode = "number";
+            RecordSort();
+        }
+
+        private void usersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report_mode = true;
+            report_type = "user";
+            RefreshList();
+            reportingToolStripMenuItem.BackColor = Color.Red;
+            sort_mode = "assigned";
+            RecordSort();
+        }
+
+        private void serialsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report_mode = true;
+            report_type = "serial";
+            RefreshList();
+            reportingToolStripMenuItem.BackColor = Color.Red;
+            sort_mode = "serial";
+            RecordSort();
+        }
+
+        private void turnReportingOFFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report_mode = false;
+            RefreshList();
+            reportingToolStripMenuItem.BackColor = Color.FromArgb(244, 244, 244);
+            sort_mode = "number";
+            RecordSort();
+        }
+
+
     }
 }
